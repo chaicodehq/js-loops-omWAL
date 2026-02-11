@@ -19,7 +19,7 @@
  * Validation:
  *   - Agar outcomes array nahi hai ya empty hai,
  *     return: { attempts: 0, success: false, totalWaitTime: 0 }
- *
+ *r
  * @param {string[]} outcomes - Array of "success" or "fail" for each attempt
  * @returns {{ attempts: number, success: boolean, totalWaitTime: number }}
  *
@@ -35,5 +35,28 @@
  *   // => { attempts: 5, success: false, totalWaitTime: 15 }
  */
 export function upiRetry(outcomes) {
-  // Your code here
+  if(!Array.isArray(outcomes) || outcomes.length === 0) return  { attempts: 0, success: false, totalWaitTime: 0 }
+
+  let totalWaitTime = 0
+  let waitTime = 1
+  let attempts = 0
+  let success = false
+
+  do {
+    const result = outcomes[attempts]
+    attempts ++
+
+
+    if(result === "success"){
+      success = true
+      break
+    }
+
+    if(attempts < 5 && attempts < outcomes.length){
+      totalWaitTime += waitTime;
+      waitTime *= 2
+    }
+  } while (attempts < 5 && attempts < outcomes.length);
+
+  return  { attempts, success, totalWaitTime }
 }

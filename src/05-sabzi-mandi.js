@@ -30,5 +30,24 @@
  *   // => { items: [], totalBill: 0 }
  */
 export function sabziMandiBill(shoppingList, priceList) {
-  // Your code here
+  if (!Array.isArray(shoppingList) || typeof priceList !== "object" || priceList === null) {
+    return { items: [], totalBill: 0 };
+  }
+
+  let items = [];
+  let totalBill = 0;
+
+  for (let item of shoppingList) {
+    if (!item || typeof item.name !== "string" || typeof item.qty !== "number" || item.qty <= 0) continue;
+
+    let price = priceList[item.name];
+
+    if (typeof price !== "number" || price > 80) continue;
+
+    let cost = price * item.qty;
+    items.push({ name: item.name, qty: item.qty, cost });
+    totalBill += cost;
+  }
+
+  return { items, totalBill };
 }
